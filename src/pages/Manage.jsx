@@ -7,9 +7,12 @@ import { BsGrid3X3GapFill } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const Manage = (props) => {
-  const starRef = useRef(null)
+  const navigate = useNavigate()
+  const { setTitle, setDescription,setColor } = props
+  const arrowRef = useRef(null)
 
   const [iconsVisible, setIconsVisible] = useState(true)
   const { todos, setTodos } = props
@@ -27,13 +30,26 @@ const Manage = (props) => {
     localStorage.setItem("todos", newTodoArrayInLocalStorage)
     // setTodos((prev)=> prev.splice(index,1)) ❎
   }
-
   const changeVisibility = () => {
+    let flag = !iconsVisible
     setIconsVisible((prev) => !prev)
-    if(starRef.current){
-      starRef.current.style.transform = "rotate(90deg)"
+    if (arrowRef.current) {
+      if (flag) {
+        arrowRef.current.style.transform = "rotate(0deg)"
+      } else {
+        arrowRef.current.style.transform = "rotate(180deg)"
+      }
     }
   }
+  const viewTodo = (todo, index) => {
+    // console.log(todo);
+    // console.log("prevtodo",todo);
+    setTitle(todo.title)
+    setDescription(todo.description)
+    setColor(todo.color)
+    navigate(`/update/${index}`)
+  }
+
   return (
     <>
       <header>
@@ -47,13 +63,13 @@ const Manage = (props) => {
             : null} */}
           {iconsVisible && <>
             <IoArchive />
-            <FaStar ref={starRef} />
+            <FaStar />
             <BsGrid3X3GapFill />
           </>}
 
 
           <div onClick={changeVisibility}>
-            <IoIosArrowBack />
+            <IoIosArrowBack ref={arrowRef} />
             <RiDashboardFill />
           </div>
           <Link to={'/'}><ImMenu className='' /></Link>
@@ -63,7 +79,7 @@ const Manage = (props) => {
         <hr />
         {todos.map((todo, index) => {
           return <div key={todo.title + index}>
-            <p>{todo.title}</p>
+            <p onClick={() => viewTodo(todo, index)}>{todo.title}</p>
             <div style={{ border: '2px solid red' }}>
               <IoArchive />
               <FaStar />
