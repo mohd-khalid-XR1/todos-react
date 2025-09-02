@@ -11,11 +11,12 @@ import { useNavigate } from 'react-router-dom';
 
 const Manage = (props) => {
   const navigate = useNavigate()
-  const { setTitle, setDescription,setColor } = props
+  const { setTitle, setDescription, setColor, todos, setTodos, wallpaper } = props
   const arrowRef = useRef(null)
 
   const [iconsVisible, setIconsVisible] = useState(true)
-  const { todos, setTodos } = props
+  const [typeTodo, setTypeTodo] = useState('all')
+
   const deleteTodo = (index) => {
     console.log(index);
     setTodos((prev) => {
@@ -50,8 +51,30 @@ const Manage = (props) => {
     navigate(`/update/${index}`)
   }
 
+  const manageFavourite = (index) => {
+    setTodos((prev) => {
+      const x = prev.map((todo, i) => {
+        if (index === i) return { ...todo, isFavourite: !todo.isFavourite }
+        return todo
+      })
+      localStorage.setItem('todos', JSON.stringify(x))
+      return x
+    })
+  }
+
+  const manageArchieve = (index) => {
+    setTodos((prev) => {
+      const x = prev.map((todo, i) => {
+        if (index === i) return { ...todo, isArchive: !todo.isArchive }
+        return todo
+      })
+      localStorage.setItem('todos', JSON.stringify(x))
+      return x
+    })
+  }
+
   return (
-    <>
+    <div className={`${wallpaper}`}>
       <header>
         <h2>Your Notes :</h2>
         <div>
@@ -62,9 +85,9 @@ const Manage = (props) => {
               <BsGrid3X3GapFill /></>
             : null} */}
           {iconsVisible && <>
-            <IoArchive />
-            <FaStar />
-            <BsGrid3X3GapFill />
+            <IoArchive onClick={() => setTypeTodo("archive")} />
+            <FaStar onClick={() => setTypeTodo("favourite")} />
+            <BsGrid3X3GapFill onClick={() => setTypeTodo("all")} />
           </>}
 
 
@@ -78,17 +101,32 @@ const Manage = (props) => {
       <main>
         <hr />
         {todos.map((todo, index) => {
+          const { isFavourite , isArchive } = todo
+
+          if (typeTodo === 'favourite' && isFavourite === false) {
+            return null
+          }else if(typeTodo === 'all' && isArchive === true){
+            return null
+          }else if(typeTodo === 'archive' && isArchive === false){
+            return
+          }
+
           return <div key={todo.title + index}>
             <p onClick={() => viewTodo(todo, index)}>{todo.title}</p>
             <div style={{ border: '2px solid red' }}>
-              <IoArchive />
-              <FaStar />
+              <IoArchive
+                className={`${isArchive ? 'yellow' : ''}`}
+                onClick={() => manageArchieve(index)} />
+              <FaStar
+                className={`${isFavourite ? 'yellow' : ''}`}
+                onClick={() => manageFavourite(index)}
+              />
               <FaTrashAlt onClick={() => deleteTodo(index)} />
             </div>
           </div>
         })}
       </main>
-    </>
+    </div>
   )
 }
 

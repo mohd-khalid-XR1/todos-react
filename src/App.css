@@ -1,0 +1,24 @@
+.wallpaper0 {
+    background-image: none;
+    background-color: white;
+}
+
+.wallpaper1 {
+    background-image: url('/wallpaper1.webp');
+}
+
+.wallpaper2 {
+    background-image: url('/wallpaper2.jpg');
+}
+
+.wallpaper3 {
+    background-image: url('/wallpaper3.jpg');
+}
+
+.wallpaper4 {
+    background-image: url('/wallpaper4.jpg');
+}
+
+.yellow {
+    color: yellow;
+}

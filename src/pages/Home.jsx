@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Footer from '../components/Footer'
 import { ImMenu } from "react-icons/im";
 import { FaSave } from "react-icons/fa";
@@ -6,6 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import './Home.css'
+import Wallpaper from '../components/Wallpaper';
 
 const Home = (props) => {
     const { id } = useParams()
@@ -19,10 +20,12 @@ const Home = (props) => {
         setDescription,
         setTitle,
         setColor,
-        color
+        color,
+        wallpaper,
+        setWallpaper,
     }
         = props
-        // console.log("title",title);
+    // console.log("title",title);
     const navigate = useNavigate()
     const descriptionRef = useRef()
     const [isFieldDisable, setIsFieldDisable] = useState(true)
@@ -40,17 +43,26 @@ const Home = (props) => {
             // console.log(title);
             // console.log(description);
             // console.log(color);
-            const newTodo = {
+            let newTodo = {
                 title,
                 description,
                 color,
             }
 
-            setTodos((prev) => prev.map((prevTodo, index) => {
-                if (id === index) return newTodo
-                return prevTodo
+            setTodos((prev) => {
+                const x = prev.map((prevTodo, index) => {
+                    if (id == index) return newTodo
+                    return prevTodo
+                })
+                localStorage.setItem("todos", JSON.stringify(x))
+                return x
             })
-            )
+            // newTodo = todos.map((prevTodo, index) => {
+            //     if (id == index) return newTodo
+            //     return prevTodo
+            // })
+            // console.log(newTodo);
+            // setTodos(newTodo)
             navigate("/manage")
 
         } else {
@@ -59,6 +71,8 @@ const Home = (props) => {
                 title: title,
                 description: description,
                 color,
+                isFavourite: false,
+                isArchive: false,
             }
             setTodos((prev) => [todoObject, ...prev])
             let todoToSaveInLocalStorage = [todoObject, ...todos]
@@ -84,40 +98,48 @@ const Home = (props) => {
             console.log(descriptionElement);
         }
     }
+
+    useEffect(() => {
+        const descriptionElement = descriptionRef.current
+        if (descriptionElement) {
+            descriptionElement.style.color = `${color}`
+            console.log(descriptionElement);
+        }
+    }, [])
+
     return (
-        <>
+        <div className={`${wallpaper}`}>
             <header>Notes</header>
             <main>
                 <form onSubmit={createTodo}>
                     <section>
                         <input type="text" value={title} disabled={isFieldDisable} onChange={(e) => setTitle(e.target.value)} />
-                        <select name="" id="">
-                            <option value="">Wallpaper</option>
-                            <option value="">Wallpaper</option>
-                            <option value="">Wallpaper</option>
-                            <option value="">Wallpaper</option>
-                            <option value="">Wallpaper</option>
-                        </select>
+                        <Wallpaper setWallpaper={setWallpaper} />
                         <Link to={'/manage'}><ImMenu className='' /></Link>
                     </section>
                     <section>
                         <div>
                             <textarea value={description} ref={descriptionRef} onChange={(e) => setDescription(e.target.value)} disabled={isFieldDisable} name="" rows={30} cols={70} id=""></textarea>
                             <br />
-                            {isTodoUpdate && <button type='button' className={`${isFieldDisable ? "" : "hidden"}`}><FaEdit onClick={changeDisable} /></button>}
+                            {isTodoUpdate && <button
+                                type='button'
+                                onClick={changeDisable}
+                                className={`${isFieldDisable ? "" : "hidden"}`}>
+                                <FaEdit />
+                            </button>}
                             <button type='submit' className={`${isFieldDisable ? "hidden" : ""}`}><FaSave /></button>
                         </div>
                         <div>
                             <hr />
                             <FaCirclePlus onClick={changeDisable} />
-                            <input type="color" name="" id="" onChange={onChangeColor} />
+                            {!isFieldDisable && <input type="color" name="" id="" onChange={onChangeColor} />}
                         </div>
                     </section>
                 </form>
             </main>
             <hr />
             <Footer />
-        </>
+        </div>
     )
 }
 

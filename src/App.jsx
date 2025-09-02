@@ -12,14 +12,17 @@ function App() {
     localTodo = []
   }
   localTodo = (localTodo && Array.isArray(localTodo)) ? localTodo : []
+
   const [todos, setTodos] = useState(localTodo)
   console.log(todos);
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [color, setColor] = useState('black')
+  const [wallpaper, setWallpaper] = useState('wallpaper0')
 
 
   return (
+
     <Routes>
       <Route path='/' element={<Home
         todos={todos}
@@ -30,6 +33,8 @@ function App() {
         setDescription={setDescription}
         color={color}
         setColor={setColor}
+        wallpaper={wallpaper}
+        setWallpaper={setWallpaper}
       />} />
       <Route path='/update/:id' element={<Home
         title={title}
@@ -39,8 +44,12 @@ function App() {
         setDescription={setDescription}
         setColor={setColor}
         setTodos={setTodos}
+        todos={todos}
+        wallpaper={wallpaper}
+        setWallpaper={setWallpaper}
       />} />
       <Route path='/manage' element={<Manage
+        wallpaper={wallpaper}
         todos={todos}
         setTodos={setTodos}
         setTitle={setTitle}
@@ -48,6 +57,7 @@ function App() {
         setColor={setColor}
       />} />
     </Routes>
+
   )
 }
 
