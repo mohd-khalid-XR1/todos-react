@@ -109,17 +109,32 @@ const Home = (props) => {
 
     return (
         <div className={`${wallpaper}`}>
-            <header>Notes</header>
+            <header className='text-black text-3xl font-extrabold underline text-center mb-4'>Notes</header>
             <main>
                 <form onSubmit={createTodo}>
                     <section>
-                        <input type="text" value={title} disabled={isFieldDisable} onChange={(e) => setTitle(e.target.value)} />
+                        <input
+                        className='border-3 border-[#f54949] border-double rounded-[10px] text-gray-600'
+                            type="text"
+                            value={title}
+                            disabled={isFieldDisable}
+                            onChange={(e) => setTitle(e.target.value)}
+                            name='title'
+                        />
                         <Wallpaper setWallpaper={setWallpaper} />
-                        <Link to={'/manage'}><ImMenu className='' /></Link>
+                        <Link to={'/manage'} className=''><ImMenu className='inline' /></Link>
                     </section>
                     <section>
                         <div>
-                            <textarea value={description} ref={descriptionRef} onChange={(e) => setDescription(e.target.value)} disabled={isFieldDisable} name="" rows={30} cols={70} id=""></textarea>
+                            <textarea
+                                className='border italic h-[400px] w-60 m-4 px-2 py-3'
+                                value={description}
+                                ref={descriptionRef}
+                                onChange={(e) => setDescription(e.target.value)} disabled={isFieldDisable}
+                                name="description"
+                                rows={30}
+                                cols={70}
+                                id=""></textarea>
                             <br />
                             {isTodoUpdate && <button
                                 type='button'

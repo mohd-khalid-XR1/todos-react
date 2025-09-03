@@ -75,9 +75,9 @@ const Manage = (props) => {
 
   return (
     <div className={`${wallpaper}`}>
-      <header>
+      <header className='flex justify-between py-5 px-6 border'>
         <h2>Your Notes :</h2>
-        <div>
+        <div className='flex gap-5'>
           {/* {iconsVisible ?
             <>
               <IoArchive />
@@ -85,29 +85,29 @@ const Manage = (props) => {
               <BsGrid3X3GapFill /></>
             : null} */}
           {iconsVisible && <>
-            <IoArchive onClick={() => setTypeTodo("archive")} />
-            <FaStar onClick={() => setTypeTodo("favourite")} />
-            <BsGrid3X3GapFill onClick={() => setTypeTodo("all")} />
+            <IoArchive onClick={() => setTypeTodo("archive")} className='text-xl' />
+            <FaStar onClick={() => setTypeTodo("favourite")} className='text-xl' />
+            <BsGrid3X3GapFill onClick={() => setTypeTodo("all")} className='text-xl' />
           </>}
 
 
-          <div onClick={changeVisibility}>
-            <IoIosArrowBack ref={arrowRef} />
-            <RiDashboardFill />
+          <div onClick={changeVisibility} className='flex gap-2 border rounded-md items-center'>
+            <IoIosArrowBack ref={arrowRef} className='text-xl' />
+            <RiDashboardFill className='text-xl' />
           </div>
-          <Link to={'/'}><ImMenu className='' /></Link>
+          <Link to={'/'}><ImMenu className='text-xl' /></Link>
         </div>
       </header >
+      <div className='h-1 w-full bg-black mt-3 mx-5'></div>
       <main>
-        <hr />
         {todos.map((todo, index) => {
-          const { isFavourite , isArchive } = todo
+          const { isFavourite, isArchive } = todo
 
           if (typeTodo === 'favourite' && isFavourite === false) {
             return null
-          }else if(typeTodo === 'all' && isArchive === true){
+          } else if (typeTodo === 'all' && isArchive === true) {
             return null
-          }else if(typeTodo === 'archive' && isArchive === false){
+          } else if (typeTodo === 'archive' && isArchive === false) {
             return
           }
 
