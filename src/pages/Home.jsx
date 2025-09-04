@@ -7,6 +7,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import './Home.css'
 import Wallpaper from '../components/Wallpaper';
+import AuthProvider from '../components/AuthProvider';
 
 const Home = (props) => {
     const { id } = useParams()
@@ -66,7 +67,7 @@ const Home = (props) => {
             navigate("/manage")
 
         } else {
-            console.log('create');
+            // console.log('create');
             const todoObject = {
                 title: title,
                 description: description,
@@ -78,7 +79,6 @@ const Home = (props) => {
             let todoToSaveInLocalStorage = [todoObject, ...todos]
             todoToSaveInLocalStorage = JSON.stringify(todoToSaveInLocalStorage)
             localStorage.setItem("todos", todoToSaveInLocalStorage)
-
 
             setTitle("")
             setDescription("")
@@ -95,15 +95,16 @@ const Home = (props) => {
         const descriptionElement = descriptionRef.current
         if (descriptionElement) {
             descriptionElement.style.color = `${inputColor}`
-            console.log(descriptionElement);
+            // console.log(descriptionElement);
         }
     }
 
     useEffect(() => {
+        // console.log('checking login');
         const descriptionElement = descriptionRef.current
         if (descriptionElement) {
             descriptionElement.style.color = `${color}`
-            console.log(descriptionElement);
+            // console.log(descriptionElement);
         }
     }, [])
 

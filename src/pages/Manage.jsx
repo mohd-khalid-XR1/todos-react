@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { IoArchive } from "react-icons/io5";
 import { ImMenu } from "react-icons/im";
@@ -73,6 +73,9 @@ const Manage = (props) => {
     })
   }
 
+  // useEffect(() => {
+  //   console.log('checking login');
+  // }, [])
   return (
     <div className={`${wallpaper}`}>
       <header className='flex justify-between py-5 px-6 border'>
