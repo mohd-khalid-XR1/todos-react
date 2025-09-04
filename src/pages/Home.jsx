@@ -110,7 +110,7 @@ const Home = (props) => {
 
     return (
         <div className={`${wallpaper}`}>
-            <header className='text-black text-3xl font-extrabold underline text-center mb-4'>Notes</header>
+            <header className='text-blue-500 text-3xl font-extrabold underline text-center mb-4'>Notes</header>
             <main>
                 <form onSubmit={createTodo}>
                     <section>
